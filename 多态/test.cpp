@@ -2,7 +2,7 @@
 
 using namespace std;
 
-
+/*
 class Base
 {
       public:
@@ -40,4 +40,83 @@ int main ()
                                       delete pDerived;
                                             return 0;
 
+}  */
+
+
+
+class Base
+{
+  public:
+      void fun()
+      {
+            cout << "Base" << endl;
+              
+      }
+      Base()
+      {
+        cout<<"Base"<<endl;
+      }
+     virtual ~Base()
+        {
+              cout << "~Base" << endl;
+                
+        }
+  private:
+          int m_a;
+            int m_b;
+
+};
+
+class A :public Base
+{
+  public:
+      A()
+      {
+            cout << "A" << endl;
+              
+      }
+        void fun()
+        {
+              cout << "fun" << endl;
+                
+        }
+          ~A()
+          {
+                cout << "~A" << endl;
+                  
+          }
+            void print()
+            {
+                  cout << "print" << endl;
+                    
+            }
+  private:
+              int a;
+                int b;
+
+};
+
+
+int main()
+{
+    Base* p = new A();  //动态申请需要手动释放
+      delete p;
+      return 0;
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
