@@ -40,7 +40,7 @@ int main ()
                                       delete pDerived;
                                             return 0;
 
-}  */
+}  
 
 
 
@@ -105,7 +105,37 @@ int main()
 
 }
 
+*/
 
+class ClassA
+{
+  public:
+        virtual ~ ClassA(){};
+            virtual void FunctionA(){};
+
+};
+class ClassB
+{
+  public:
+       virtual void FunctionB(){};
+
+};
+class ClassC : public ClassA,public ClassB
+{
+      public:
+
+};
+  
+
+int main()
+{
+ ClassC aObject;
+ ClassA* pA=&aObject;
+ ClassB* pB=&aObject;                                                                                                                                               
+ ClassC* pC=&aObject;
+ cout<<"PA = "<<pA <<"PB = "<<pB<<"pC = "<<pC<<endl;
+  return 0;
+}
 
 
 
