@@ -22,6 +22,6 @@ int main()
     printf("[%d]Parent is working \n",getpid());
   }
     printf("[%d]End!\n",getpid());
-    getchar();
+   // getchar();
     _exit(0);
 }
