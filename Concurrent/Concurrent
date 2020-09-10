@@ -69,8 +69,8 @@ SIGTERM与SIGKILL
 来一万个信号置为1还是1
 
 6:信号常用函数
-kill()  //在这里是发信号的 kill
-raise() //
+kill()  //发信号的 kill函数   send signal to a process
+raise() // 
 
 alarm()
 pause()
