@@ -70,10 +70,14 @@ SIGTERM与SIGKILL
 
 6:信号常用函数
 kill()  //发信号的 kill函数   send signal to a process
-raise() // 
+raise() //给当前进程或线程发信号    
+alarm() 程序有了准确点的概念     计时函数  alarm 无法进行一个多任务的计时器 
+为什么要少用sleep函数呢，因为在有的环境下sleep是alarm + pause 函数封装的
+volatile  遇到这个数值的真正的空间去取数值，不要相信在内存中的存放
 
-alarm()
-pause()
+一般sleep是nanosleep下封装的 
+
+pause() 
 abort()
 system()
 sleep()
