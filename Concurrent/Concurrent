@@ -1,3 +1,14 @@
+有8种方式使进程终止，其中前5种为正常终止，它们是
+1：从 main 返回
+2：调用 exit
+3：调用 _exit 或 _Exit
+4：最后一个线程从其启动例程返回
+5：最后一个线程调用 pthread_exit
+异常终止有3种，它们是
+6：调用 abort
+7：接到一个信号并终止
+8：最后一个线程对取消请求做出响应
+
 并发（信号、线程）
 信号是初步异步
 线程是强烈异步
@@ -120,21 +131,45 @@ sleep()
   kill -l 可以查看信号命令集
   信号存放在/usr/include/bits/signum.h中
   
-
-
-
-
-
-
-
-
-
-
-
-
-
   二：线程
 
+posix线程是一套标准而不是实现
+别的标准比如：openmp标准线程
+
+线程标识：pthread_t 
+ps ax -L
+
+
+
+
+
+1:线程概念：
+可以理解成一个正在运行的函数
+多个线程是兄弟关系，不分先后
+2：线程创建：
+ int pthread_equal(pthread_t t1, pthread_t t2);  比较线程ID 如果两个线程ID相同的话返回的是非0值，否则返回的0值 
+ pthread_t pthread_self(void)  获取当前线程的线程标识
+ int pthread_create(pthread_t *thread, const pthread_attr_t *attr,
+                     void *(*start_routine) (void *), void *arg);  创建线程
+                     thread 是创建线程的线程标识
+                     attr是属性  只读不写   人为规定这个东西
+                     void*(start_routine)(void*) 这个扔出去并列跑的线程,也就是个函数
+                     参数是void* arg  就是函数的参数
+                     
+成功返回0，失败返回的是error number    
+
+
+
+线程终止
+线程取消
+栈的清理
+3：线程同步
+4：线程属性
+线程同步的属性
+5：
+  重入
+  线程和信号的关系
+  线程与fork
 
 
 
