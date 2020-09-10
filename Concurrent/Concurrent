@@ -19,7 +19,7 @@
 
 1：查询法    
 2：通知法
- 
+
 
 2：信号函数
 singal();
@@ -68,27 +68,72 @@ SIGTERM与SIGKILL
 标准信号为什么要丢失？
 来一万个信号置为1还是1
 
-6:信号常用函数
-kill()  //发信号的 kill函数   send signal to a process
+  6:信号常用函数
+  kill()  //发信号的 kill函数   send signal to a process
 raise() //给当前进程或线程发信号    
-alarm() 程序有了准确点的概念     计时函数  alarm 无法进行一个多任务的计时器 
-为什么要少用sleep函数呢，因为在有的环境下sleep是alarm + pause 函数封装的
-volatile  遇到这个数值的真正的空间去取数值，不要相信在内存中的存放
+  alarm() 程序有了准确点的概念     计时函数  alarm 无法进行一个多任务的计时器 
+  为什么要少用sleep函数呢，因为在有的环境下sleep是alarm + pause 函数封装的
 
-一般sleep是nanosleep下封装的 
+  alarm 这个函数计数比较僵硬 ，可用setitime代替
 
-pause() 
-abort()
-system()
+  volatile  遇到这个数值的真正的空间去取数值，不要相信在内存中的存放
+
+  一般sleep是nanosleep下封装的 
+
+  pause() 
+  abort()
+  system()
 sleep()
-7:信号集
-8：信号屏蔽字/pending集的处理
-9：sigsuspend()
-   sigaction()
-   setitimer()
-10:实时信号
+  7:信号集
+  信号的集合
 
-二：线程
+  sigemptyset
+   信号集的类型sigset_t
+  int sigemptyset(sigset_t *set);
+
+  int sigfillset(sigset_t *set);
+
+  int sigaddset(sigset_t *set, int signum);
+
+  int sigdelset(sigset_t *set, int signum);
+
+  int sigismember(const sigset_t *set, int signum);
+
+
+
+  8：信号屏蔽字/pending集的处理
+  sigprocmask()  在信号相应的那个mask位图  给了我们人为的方式来干扰信号的状态 
+  不能够确定信号什么时候到来，但是我们能够通过这个函数来确定信号什么时候被相应
+  sigpending()
+
+
+
+  9：sigsuspend()
+  sigaction()
+  setitimer()   好处是误差不累计
+
+
+  10:实时信号
+  标准信号会丢失，没有顺序要求
+  进一步解决标准信号的不足
+  实时信号的响应有顺序，但是没有特定的值
+  kill -l 可以查看信号命令集
+  信号存放在/usr/include/bits/signum.h中
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  二：线程
 
 
 
