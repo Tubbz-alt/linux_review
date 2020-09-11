@@ -1,6 +1,6 @@
 有8种方式使进程终止，其中前5种为正常终止，它们是
 1：从 main 返回
-2：调用 exit
+2：调用 exit   线程还没有来得及被调度，进程就结束了
 3：调用 _exit 或 _Exit
 4：最后一个线程从其启动例程返回
 5：最后一个线程调用 pthread_exit
@@ -158,11 +158,30 @@ ps ax -L
                      
 成功返回0，失败返回的是error number    
 
-
-
+线程的调度取决于调度器策略
 线程终止
+3种方式：
+1：线程从启动例程返回，返回值就是线程的退出码
+2：线程可以被统一进程中的其他线程取消
+3：线程调用 pthread_exit()函数 相当于进程中的exit()函数  
+ void pthread_exit(void *retval);
+ int pthread_join(pthread_t thread, void **retval);   相当于进程中的wait函数  相当于线程收尸
 线程取消
+线程在执行过程中一定会用到线程的取消
+线程正在跑的话是没有办法通过pthread_join将这个线程进行收尸的，因此要用到pthread_cancel
+pthread_cancel()
+ int pthread_cancel(pthread_t thread);
+
+
 栈的清理
+pthread_cleanup_push();   
+pthread_cleanup_pop();
+]这两个不是函数是宏定义
+  void pthread_cleanup_push(void (*routine)(void *),void *arg);
+  void pthread_cleanup_pop(int execute);
+    execute 1表示调用 0表示只弹栈不调用
+有多少个push就有多少个pop，否则程序会出错
+
 3：线程同步
 4：线程属性
 线程同步的属性

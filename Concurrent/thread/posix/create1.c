@@ -6,7 +6,8 @@
 void* func(void)
 {
   puts("Thread is Working!");
-  return NULL;
+  pthread_exit(NULL);
+ //return NULL;
 }
 
 
@@ -16,12 +17,14 @@ int main()
   pthread_t tid;
   int err;
   err = pthread_create(&tid,NULL,(void*)&func,NULL);
-  func();
   if(err)
   {
     fprintf(stderr,"pthread_create_error %s",strerror(err));
     exit(1);
   }
+ // pthread_join(tid,NULL); //只收尸不关心地址
+   pthread_join(tid,NULL);
   puts("End!");
   return 0;
 }
+
