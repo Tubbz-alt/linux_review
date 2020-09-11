@@ -99,7 +99,7 @@ sleep()
   信号的集合
 
   sigemptyset
-   信号集的类型sigset_t
+  信号集的类型sigset_t
   int sigemptyset(sigset_t *set);
 
   int sigfillset(sigset_t *set);
@@ -115,12 +115,12 @@ sleep()
   8：信号屏蔽字/pending集的处理
   sigprocmask()  在信号相应的那个mask位图  给了我们人为的方式来干扰信号的状态 
   不能够确定信号什么时候到来，但是我们能够通过这个函数来确定信号什么时候被相应
-  sigpending()
+sigpending()
 
 
 
   9：sigsuspend()
-  sigaction()
+sigaction()
   setitimer()   好处是误差不累计
 
 
@@ -130,62 +130,76 @@ sleep()
   实时信号的响应有顺序，但是没有特定的值
   kill -l 可以查看信号命令集
   信号存放在/usr/include/bits/signum.h中
-  
+
   二：线程
 
-posix线程是一套标准而不是实现
-别的标准比如：openmp标准线程
+  posix线程是一套标准而不是实现
+  别的标准比如：openmp标准线程
 
-线程标识：pthread_t 
-ps ax -L
-
-
+  线程标识：pthread_t 
+  ps ax -L
 
 
 
-1:线程概念：
-可以理解成一个正在运行的函数
-多个线程是兄弟关系，不分先后
-2：线程创建：
- int pthread_equal(pthread_t t1, pthread_t t2);  比较线程ID 如果两个线程ID相同的话返回的是非0值，否则返回的0值 
- pthread_t pthread_self(void)  获取当前线程的线程标识
- int pthread_create(pthread_t *thread, const pthread_attr_t *attr,
-                     void *(*start_routine) (void *), void *arg);  创建线程
-                     thread 是创建线程的线程标识
-                     attr是属性  只读不写   人为规定这个东西
-                     void*(start_routine)(void*) 这个扔出去并列跑的线程,也就是个函数
-                     参数是void* arg  就是函数的参数
-                     
-成功返回0，失败返回的是error number    
 
-线程的调度取决于调度器策略
-线程终止
-3种方式：
-1：线程从启动例程返回，返回值就是线程的退出码
-2：线程可以被统一进程中的其他线程取消
-3：线程调用 pthread_exit()函数 相当于进程中的exit()函数  
- void pthread_exit(void *retval);
- int pthread_join(pthread_t thread, void **retval);   相当于进程中的wait函数  相当于线程收尸
-线程取消
-线程在执行过程中一定会用到线程的取消
-线程正在跑的话是没有办法通过pthread_join将这个线程进行收尸的，因此要用到pthread_cancel
+
+  1:线程概念：
+  可以理解成一个正在运行的函数
+  多个线程是兄弟关系，不分先后
+  2：线程创建：
+  int pthread_equal(pthread_t t1, pthread_t t2);  比较线程ID 如果两个线程ID相同的话返回的是非0值，否则返回的0值 
+  pthread_t pthread_self(void)  获取当前线程的线程标识
+  int pthread_create(pthread_t *thread, const pthread_attr_t *attr,
+      void *(*start_routine) (void *), void *arg);  创建线程
+  thread 是创建线程的线程标识
+  attr是属性  只读不写   人为规定这个东西
+  void*(start_routine)(void*) 这个扔出去并列跑的线程,也就是个函数
+  参数是void* arg  就是函数的参数
+
+  成功返回0，失败返回的是error number    
+
+  线程的调度取决于调度器策略
+  线程终止
+  3种方式：
+  1：线程从启动例程返回，返回值就是线程的退出码
+  2：线程可以被统一进程中的其他线程取消
+  3：线程调用 pthread_exit()函数 相当于进程中的exit()函数  
+  void pthread_exit(void *retval);
+  int pthread_join(pthread_t thread, void **retval);   相当于进程中的wait函数  相当于线程收尸
+  线程取消
+  线程在执行过程中一定会用到线程的取消
+  线程正在跑的话是没有办法通过pthread_join将这个线程进行收尸的，因此要用到pthread_cancel
 pthread_cancel()
- int pthread_cancel(pthread_t thread);
+  int pthread_cancel(pthread_t thread);
 
+  取消有两种状态：一种是允许 一种是不允许
+  允许取消，分为异步取消和推迟取消
+  推迟cancel是默认的  推迟到cancel点再相应
 
-栈的清理
-pthread_cleanup_push();   
-pthread_cleanup_pop();
-]这两个不是函数是宏定义
+  cancel点 ： POSIX定义的cancel点，都是可能引发阻塞的系统调用
+  int pthread_setcancelstate(int state, int *oldstate); 设置是否允许取消
+  int pthread_setcanceltype(int type, int *oldtype);  设置取消方式，允许cancel，但是一旦cancel就会挂掉
+
+  ped_testcancel(void);  本函数什么都不做，就是一个取消点
+  
+  线程分离：
+  pthread_detach
+  int pthread_detach(pthread_t thread);
+  不关心该线程的生死存亡，就不能被pthread_join回来
+
+  栈的清理
+  pthread_cleanup_push();   
+  pthread_cleanup_pop();
+  ]这两个不是函数是宏定义
   void pthread_cleanup_push(void (*routine)(void *),void *arg);
   void pthread_cleanup_pop(int execute);
-    execute 1表示调用 0表示只弹栈不调用
-有多少个push就有多少个pop，否则程序会出错
+  execute 1表示调用 0表示只弹栈不调用
+  有多少个push就有多少个pop，否则程序会出错
 
-3：线程同步
-4：线程属性
-线程同步的属性
-5：
+  3：线程同步
+  4：线程属性
+  线程同步的属性
+  5：
   重入
   线程和信号的关系
   线程与fork
