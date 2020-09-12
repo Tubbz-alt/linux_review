@@ -7,9 +7,17 @@
 #include<string.h>
 //用200个线程判断区间内是否为质数
 
+struct thread_arg_st
+{
+  int n;
+};
+
+struct thread_arg_st *p;
+
 static void* thread_primer(void *p)
 {
-  int i = (int)p;
+  int i = ((struct thread_arg_st *)p)->n;
+  //free(p);
   int j =2;
   int flag = 1;
   for(j = 2; j < i/2;j++)
@@ -32,23 +40,30 @@ int main()   //判断一个数是否是质数
   pthread_t err;
   pthread_t tid[200];
   int i = 20000;
+  void *ptr;
   for(i ;i <= 20200;++i)
   {
-    err = pthread_create(&tid[i-20000],NULL,(void*)thread_primer,(void*)i);
+    p =(struct thread_arg_st*)malloc(sizeof(*p));
+    if(p ==NULL)
+    {
+      perror("malloc_error");
+      exit(1);
+    }
+    p->n = i;
+    err = pthread_create(&tid[i-20000],NULL,thread_primer,p);
     if(err)
     {
       fprintf(stderr,"pthread_create():%s\n",strerror(err));
       exit(1);
     }
-
   }
   for(i = 0;i <= 200;++i)
   {
-    pthread_join(tid[i],NULL);
+    pthread_join(tid[i],&ptr);
+    free(ptr);
   }
   exit(0);
 }
 
 //程序不正常会发生竞争
-
 

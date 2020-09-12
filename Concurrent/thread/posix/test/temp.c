@@ -32,9 +32,9 @@ int main()   //判断一个数是否是质数
   pthread_t err;
   pthread_t tid[200];
   int i = 20000;
-  for(i ;i <= 20200;++i)
+  for(i ;i <= 20001;++i)
   {
-    err = pthread_create(&tid[i-20000],NULL,(void*)thread_primer,(void*)i);
+    err = pthread_create(&tid[i-20000],NULL,thread_primer,(void*)i);
     if(err)
     {
       fprintf(stderr,"pthread_create():%s\n",strerror(err));
@@ -42,9 +42,9 @@ int main()   //判断一个数是否是质数
     }
 
   }
-  for(i = 0;i <= 200;++i)
+  for(i = 20000;i <= 20001;++i)
   {
-    pthread_join(tid[i],NULL);
+    pthread_join(tid[i-20000],NULL);
   }
   exit(0);
 }
