@@ -7,7 +7,7 @@
 #include<string.h>
 //用200个线程判断区间内是否为质数
 
-static void* thread_primer(void *p)
+void* thread_primer(void *p)
 {
   int i = (int)p;
   int j =2;
@@ -30,7 +30,7 @@ static void* thread_primer(void *p)
 int main()   //判断一个数是否是质数
 {
   pthread_t err;
-  pthread_t tid[200];
+  pthread_t tid[201];
   int i = 20000;
   for(i ;i <= 20200;++i)
   {
@@ -42,7 +42,7 @@ int main()   //判断一个数是否是质数
     }
 
   }
-  for(i = 20000;i <= 200200;++i)
+  for(i = 20000;i <= 20200;++i)
   {
     pthread_join(tid[i-20000],NULL);
   }
