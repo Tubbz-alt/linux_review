@@ -4,9 +4,10 @@ using namespace std;
 
 void Dir_Insert_Sort(int arr[],int length)
 {
-  for(int i = 2;i <= length;++i)
+  int i,j;
+  for( i = 2;i <= length;++i)
   {
-    int j = i-1;
+     j = i-1;
     arr[0] = arr[i];
     while(arr[0] < arr[j])
     {
