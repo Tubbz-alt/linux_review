@@ -20,6 +20,7 @@ void Permutation(int Array[],int p, int q)
   if(p == q)
   {
     PrintArray(Array,0,q);
+    return;
   }
   for(int i = p;i <= q;++i)
   {
